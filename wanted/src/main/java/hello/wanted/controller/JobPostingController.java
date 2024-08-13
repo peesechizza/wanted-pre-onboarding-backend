@@ -42,4 +42,16 @@ public class JobPostingController {
         }
     }
 
+    // 채용 공고 수정
+    @PutMapping("/api/job-postings/{jobPostingId}")
+    public ResponseEntity<UpdateJobPostingResponse> updateJobPosting(@PathVariable("jobPostingId") Long id, @RequestBody UpdateJobPostingRequest request) {
+        try {
+            JobPosting updated = jobPostingService.update(id, request);
+            return ResponseEntity.status(HttpStatus.OK).body(new UpdateJobPostingResponse("채용 공고 수정 완료"));
+        } catch (Exception e) {
+            log.error("수정 실패: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UpdateJobPostingResponse("채용 공고가 존재하지 않습니다."));
+        }
+    }
+
 }
