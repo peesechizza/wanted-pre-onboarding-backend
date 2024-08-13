@@ -54,4 +54,15 @@ public class JobPostingController {
         }
     }
 
+    // 채용 공고 삭제
+    @DeleteMapping("/api/job-postings/{jobPostingId}")
+    public ResponseEntity<DeleteJobPostingResponse> deleteJobPosting(@PathVariable("jobPostingId") Long id) {
+        try {
+            jobPostingService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new DeleteJobPostingResponse("채용 공고가 존재하지 않습니다."));
+        }
+    }
+
 }

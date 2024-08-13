@@ -56,6 +56,14 @@ public class JobPostingService {
         }
     }
 
+    @Transactional
+    public JobPosting delete(Long id) {
+        JobPosting jobPosting = jobPostingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("해당 ID와 일치하는 게시글이 없습니다: " + id));
+        jobPostingRepository.delete(jobPosting);
+        return jobPosting;
+    }
+
     // dto -> 엔티티 변환
     private JobPosting toEntity(CreateJobPostingRequest request) {
         Company company =
