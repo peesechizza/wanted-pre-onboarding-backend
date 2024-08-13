@@ -30,4 +30,16 @@ public class JobPostingController {
         }
     }
 
+    // 채용 공고 등록
+    @PostMapping("/api/job-postings")
+    public ResponseEntity<CreateJobPostingResponse> createJobPosting(@RequestBody CreateJobPostingRequest request) {
+        try {
+            JobPosting jobPosting = jobPostingService.post(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateJobPostingResponse("등록 완료"));
+        } catch (Exception e) {
+            log.error("등록 실패: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateJobPostingResponse("등록 실패"));
+        }
+    }
+
 }

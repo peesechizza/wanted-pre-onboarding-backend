@@ -35,4 +35,16 @@ public class JobPostingService {
         return dtos;
     }
 
+    @Transactional
+    public JobPosting post(CreateJobPostingRequest request) {
+        JobPosting entity = toEntity(request);
+        return jobPostingRepository.save(entity);
+    }
+
+    private JobPosting toEntity(CreateJobPostingRequest request) {
+        Company company =
+                companyRepository.findById(request.getCompanyId())
+                        .orElseThrow(() -> new RuntimeException("id와 일치하는 Company 없음: " + request.getCompanyId()));
+        return new JobPosting(company, request.getPosition(), request.getReward(), request.getSkills(), request.getDescription());
+    }
 }
